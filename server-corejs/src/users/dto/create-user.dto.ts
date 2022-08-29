@@ -12,7 +12,7 @@ export class CreateUserDto {
   public email: string;
 
   @IsString()
-  @Length(6, 20)
+  @Length(6, 40)
   @IsNotEmpty()
   public password: string;
 

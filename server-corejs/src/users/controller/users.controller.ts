@@ -9,7 +9,6 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Put,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../services/users.service';
@@ -57,7 +56,7 @@ export class UsersController {
     const user = await this.usersService.deleteUser({ id });
 
     if (!user) {
-      throw new ConflictException('User with such email exists');
+      throw new ConflictException('User with this "id" is absent');
     }
 
     return user;
