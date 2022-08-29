@@ -32,7 +32,6 @@ export class TestsController {
     return quest;
   }
 
-  @Public()
   @HttpCode(201)
   @Post('questions/:id')
   public async setQuestions(
@@ -47,7 +46,6 @@ export class TestsController {
     return quest;
   }
 
-  @Public()
   @HttpCode(201)
   @Post('questions/change/:id')
   public async changeQuestions(
@@ -61,7 +59,6 @@ export class TestsController {
     return quest;
   }
 
-  @Public()
   @Delete('questions/:id')
   public async delete(@Param('id', new ParseUUIDPipe()) id: string) {
     const quest = this.testsServise.deleteQuest(id);
@@ -91,7 +88,6 @@ export class TestsController {
     return test;
   }
 
-  @Public()
   @Post()
   @HttpCode(201)
   public async createTest(@Body() testBody: createTestDto) {
@@ -104,7 +100,6 @@ export class TestsController {
     return testBody;
   }
 
-  @Public()
   @Post(':id')
   @HttpCode(201)
   public async changeTest(
@@ -115,7 +110,6 @@ export class TestsController {
     return test ?? null;
   }
 
-  @Public()
   @Delete(':id')
   public async deleteOne(@Param('id', new ParseUUIDPipe()) id: string) {
     const test = await this.testsServise.delTest(id);
