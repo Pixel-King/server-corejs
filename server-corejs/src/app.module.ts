@@ -11,6 +11,7 @@ import 'dotenv/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { TestsModule } from './tests/tests.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.PRIVATE_JWT_KEY,
       signOptions: { expiresIn: '24h' },
     }),
+    TestsModule,
   ],
   controllers: [AppController],
   providers: [AppService, CryptoService, JwtStrategy],
