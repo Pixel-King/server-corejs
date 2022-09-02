@@ -22,7 +22,7 @@ export class AuthController {
   public async login(@Body() loginBody: LoginUserDto) {
     const user = await this.authServic.autorisation(loginBody);
     if (!user) {
-      throw new ForbiddenException();
+      throw new ForbiddenException('wrong email or password');
     }
     return user;
   }

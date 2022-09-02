@@ -14,8 +14,25 @@ export class UsersService {
     private cryptoService: CryptoService,
   ) {}
 
-  public findAllUsers() {
-    return this.usersModel.find();
+  public async findAllUsers() {
+    const allUsers = await this.usersModel.find();
+    if (allUsers)
+      return allUsers.map(
+        (
+          el: Document<unknown, any, UsersDocument> &
+            Users &
+            Document & {
+              _id: Types.ObjectId;
+            },
+        ) => {
+          return {
+            id: el.id,
+            userName: el.userName,
+            raiting: el.raiting,
+          };
+        },
+      );
+    return allUsers;
   }
 
   public async findUserBy(where: Partial<UserModel>) {
@@ -56,6 +73,8 @@ export class UsersService {
       email: user.email,
       role: user.role,
       userName: user.userName,
+      raiting: user.raiting,
+      passedTests: user.passedTests,
     };
   }
 }

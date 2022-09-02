@@ -19,6 +19,12 @@ export class Users {
 
   @Prop({ default: 'user' })
   role: string;
+
+  @Prop({ default: '0' })
+  raiting: string;
+
+  @Prop({ default: [] })
+  passedTests: string[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);
