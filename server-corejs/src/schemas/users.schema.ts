@@ -21,10 +21,10 @@ export class Users {
   role: string;
 
   @Prop({ default: '0' })
-  raiting: string;
+  rating: string;
 
   @Prop({ default: [] })
-  passedTests: string[];
+  passedTests: { date: string; testId: string }[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

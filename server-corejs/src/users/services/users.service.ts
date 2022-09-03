@@ -4,6 +4,7 @@ import { Document, Model, Types } from 'mongoose';
 import { UsersDocument, Users } from 'src/schemas/users.schema';
 import { CryptoService } from 'src/shared/crypto/crypto.service';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { updatePasedTest } from '../dto/updatePasTest.dto';
 import { UserModel, UserModelToResponse } from '../models/user.models';
 
 @Injectable()
@@ -28,21 +29,42 @@ export class UsersService {
           return {
             id: el.id,
             userName: el.userName,
-            raiting: el.raiting,
+            raiting: el.rating,
           };
         },
       );
     return allUsers;
   }
 
+  public async updatePasedTests(id: string, body: updatePasedTest) {
+    const findUser = await this.findUserBy({ id });
+    let userRating = +findUser.rating;
+    const userTests = findUser.passedTests;
+    const isPassed = userTests.find((el) => el.testId === body.testId);
+    if (!isPassed) {
+      userRating += +body.rating;
+      userTests.push({ date: body.date, testId: body.testId });
+      findUser.rating = `${userRating}`;
+      findUser.passedTests = userTests;
+      // console.log(findUser._id, 'id', findUser.id);
+      const updateUser = await this.usersModel
+        .findByIdAndUpdate(
+          { _id: findUser._id },
+          this.getUserToResponse(findUser),
+        )
+        .setOptions({ overwrite: true, new: true });
+      return updateUser;
+    }
+    return null;
+  }
+
   public async findUserBy(where: Partial<UserModel>) {
     const user = await this.usersModel.findOne(where);
-
     return user ?? null;
   }
+
   public async deleteUser(id: Partial<UserModel>) {
     const user = await this.usersModel.deleteOne(id);
-
     return user ?? null;
   }
 
@@ -73,7 +95,7 @@ export class UsersService {
       email: user.email,
       role: user.role,
       userName: user.userName,
-      raiting: user.raiting,
+      rating: user.rating,
       passedTests: user.passedTests,
     };
   }

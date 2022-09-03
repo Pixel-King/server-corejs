@@ -13,6 +13,7 @@ import {
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../services/users.service';
 import { SetMetadata } from '@nestjs/common';
+import { updatePasedTest } from '../dto/updatePasTest.dto';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -37,6 +38,18 @@ export class UsersController {
     }
 
     return this.usersService.getUserToResponse(user);
+  }
+
+  @Post('updatepastest/:id')
+  public async addPasedTestToUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() userInfo: updatePasedTest,
+  ) {
+    const user = await this.usersService.updatePasedTests(id, userInfo);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return { success: true };
   }
 
   @Post()

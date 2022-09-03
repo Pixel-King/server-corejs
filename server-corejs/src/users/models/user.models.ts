@@ -4,8 +4,8 @@ export interface UserModel {
   password: string;
   role?: string;
   userName?: string;
-  raiting?: string;
-  passedTests?: string[];
+  rating?: string;
+  passedTests?: { date: string; testId: string }[];
 }
 
 export type UserModelToResponse = Omit<UserModel, 'password'>;
