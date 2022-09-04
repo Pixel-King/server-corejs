@@ -82,12 +82,8 @@ export class TestsService {
   }
 
   public async createTest(testBody: createTestDto) {
-    const test = await this.findOneBy({
-      name: testBody.name,
-      type: testBody.type,
-    });
-    if (!test) {
-      const newTest = new this.testModel(testBody);
+    const newTest = new this.testModel(testBody);
+    if (!newTest) {
       const createdTest = await newTest.save();
       return createdTest;
     }

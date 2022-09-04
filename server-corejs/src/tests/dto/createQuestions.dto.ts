@@ -20,6 +20,10 @@ export class questionDto {
   public text: string;
 
   @IsNotEmpty()
+  @IsString()
+  public code: string;
+
+  @IsNotEmpty()
   //   @Length(3, 5)
   public answers: answer[];
 }

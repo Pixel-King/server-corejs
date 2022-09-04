@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { v1 } from 'uuid';
+import { v4 } from 'uuid';
 
 export type QuestionsDocument = Questions & Document;
 
@@ -8,11 +8,14 @@ export class Questions {
   @Prop()
   testId: string;
 
-  @Prop({ default: v1() })
+  @Prop({ default: v4() })
   questId: string;
 
   @Prop()
   text: string;
+
+  @Prop()
+  code: string;
 
   @Prop()
   answers: { answer: string; isCorrect: boolean }[];
