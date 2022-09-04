@@ -79,12 +79,12 @@ export class TestsController {
   @Public()
   @Get(':id')
   public async getTestById(@Param('id', new ParseUUIDPipe()) id: string) {
-    console.log('id test', id);
     const test = await this.testsServise.findOneBy({ id });
-    console.log('get test', test);
+
     if (!test) {
       return null;
     }
+
     return test;
   }
 

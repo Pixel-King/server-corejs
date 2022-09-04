@@ -12,6 +12,9 @@ export class Tests {
   name: string;
 
   @Prop()
+  topic: string;
+
+  @Prop()
   type: string;
 
   @Prop({ default: '0' })

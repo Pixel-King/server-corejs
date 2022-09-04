@@ -7,6 +7,10 @@ export class createTestDto {
 
   @IsString()
   @IsNotEmpty()
+  public topic: string;
+
+  @IsString()
+  @IsNotEmpty()
   public type: string;
 
   @IsString()

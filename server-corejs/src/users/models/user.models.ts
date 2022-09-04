@@ -6,6 +6,7 @@ export interface UserModel {
   userName?: string;
   rating?: string;
   passedTests?: { date: string; testId: string }[];
+  readedArticle?: { date: string; articleId: string }[];
 }
 
 export type UserModelToResponse = Omit<UserModel, 'password'>;

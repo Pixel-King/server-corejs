@@ -13,7 +13,7 @@ import {
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../services/users.service';
 import { SetMetadata } from '@nestjs/common';
-import { updatePasedTest } from '../dto/updatePasTest.dto';
+import { updatePasedTest, updateReadedArticle } from '../dto/updatePasTest.dto';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -49,6 +49,19 @@ export class UsersController {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    return { success: true };
+  }
+
+  @Post('updaterarticle/:id')
+  public async updateRating(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() artInf: updateReadedArticle,
+  ) {
+    const user = await this.usersService.updateReadedArticle(id, artInf);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     return { success: true };
   }
 

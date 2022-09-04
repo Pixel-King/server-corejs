@@ -25,6 +25,9 @@ export class Users {
 
   @Prop({ default: [] })
   passedTests: { date: string; testId: string }[];
+
+  @Prop({ default: [] })
+  readedArticle: { date: string; articleId: string }[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

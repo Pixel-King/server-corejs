@@ -4,7 +4,7 @@ import { Document, Model, Types } from 'mongoose';
 import { UsersDocument, Users } from 'src/schemas/users.schema';
 import { CryptoService } from 'src/shared/crypto/crypto.service';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { updatePasedTest } from '../dto/updatePasTest.dto';
+import { updatePasedTest, updateReadedArticle } from '../dto/updatePasTest.dto';
 import { UserModel, UserModelToResponse } from '../models/user.models';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class UsersService {
           return {
             id: el.id,
             userName: el.userName,
-            raiting: el.rating,
+            rating: el.rating,
           };
         },
       );
@@ -38,23 +38,50 @@ export class UsersService {
 
   public async updatePasedTests(id: string, body: updatePasedTest) {
     const findUser = await this.findUserBy({ id });
-    let userRating = +findUser.rating;
-    const userTests = findUser.passedTests;
-    const isPassed = userTests.find((el) => el.testId === body.testId);
-    if (!isPassed) {
-      userRating += +body.rating;
-      userTests.push({ date: body.date, testId: body.testId });
-      findUser.rating = `${userRating}`;
-      findUser.passedTests = userTests;
-      // console.log(findUser._id, 'id', findUser.id);
-      const updateUser = await this.usersModel
-        .findByIdAndUpdate(
-          { _id: findUser._id },
-          this.getUserToResponse(findUser),
-        )
-        .setOptions({ overwrite: true, new: true });
-      return updateUser;
+    if (findUser) {
+      let userRating = +findUser.rating;
+      const userTests = findUser.passedTests;
+      const isPassed = userTests.find((el) => el.testId === body.testId);
+      if (!isPassed) {
+        userRating += +body.rating;
+        userTests.push({ date: body.date, testId: body.testId });
+        findUser.rating = `${userRating}`;
+        findUser.passedTests = userTests;
+        const updateUser = await this.usersModel
+          .findByIdAndUpdate(
+            { _id: findUser._id },
+            this.getUserToResponse(findUser),
+          )
+          .setOptions({ overwrite: true, new: true });
+        return updateUser;
+      }
+      return null;
     }
+    return null;
+  }
+  public async updateReadedArticle(id: string, body: updateReadedArticle) {
+    const findUser = await this.findUserBy({ id });
+    if (findUser) {
+      let userRating = +findUser.rating;
+      const userArt = findUser.readedArticle;
+      const isReaded = userArt.find((art) => art.articleId === body.artId);
+      if (!isReaded) {
+        console.log('123');
+        userRating += +body.rating;
+        userArt.push({ date: body.date, articleId: body.artId });
+        findUser.rating = `${userRating}`;
+        findUser.readedArticle = userArt;
+        const updateUser = await this.usersModel
+          .findByIdAndUpdate(
+            { _id: findUser._id },
+            this.getUserToResponse(findUser),
+          )
+          .setOptions({ overwrite: true, new: true });
+        return updateUser;
+      }
+      return null;
+    }
+
     return null;
   }
 
@@ -97,6 +124,7 @@ export class UsersService {
       userName: user.userName,
       rating: user.rating,
       passedTests: user.passedTests,
+      readedArticle: user.readedArticle,
     };
   }
 }

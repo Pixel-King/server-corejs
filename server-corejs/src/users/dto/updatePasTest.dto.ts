@@ -13,3 +13,17 @@ export class updatePasedTest {
   @IsString()
   public testId: string;
 }
+
+export class updateReadedArticle {
+  @IsNotEmpty()
+  @IsString()
+  public rating: string;
+
+  @IsNotEmpty()
+  @IsString()
+  public date: string;
+
+  @IsNotEmpty()
+  @IsString()
+  public artId: string;
+}

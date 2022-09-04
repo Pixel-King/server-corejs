@@ -1,6 +1,7 @@
 export interface TestsModel {
   id: string;
   name: string;
+  topic: string;
   type: string;
 }
 

@@ -21,6 +21,7 @@ export class AuthService {
     }
     return null;
   }
+
   public async autorisation(userBody: LoginUserDto) {
     const user = await this.verificate(userBody);
 
@@ -35,7 +36,6 @@ export class AuthService {
       email: userBody.email,
     });
     const passwordHash = this.CryptoService.getHash(userBody.password);
-    console.log(user);
     if (user && passwordHash === user.password) {
       return user;
     }
@@ -47,16 +47,18 @@ export class AuthService {
       id: userBody.id,
       email: userBody.email,
       role: userBody.role,
+      rating: userBody.rating,
     };
     const token = this.jwtService.sign(userData, {
       secret: process.env.PRIVATE_JWT_KEY,
-      expiresIn: '24h',
+      expiresIn: '1d',
     });
     return {
       id: userBody.id,
       email: userBody.email,
       role: userBody.role,
       userName: userBody.userName,
+      userRating: userBody.rating,
       token: token,
     };
   }

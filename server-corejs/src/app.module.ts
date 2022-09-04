@@ -25,7 +25,7 @@ import { TestsModule } from './tests/tests.module';
     SharedModule,
     JwtModule.register({
       secret: process.env.PRIVATE_JWT_KEY,
-      signOptions: { expiresIn: '24h' },
+      signOptions: { expiresIn: '1d' },
     }),
     TestsModule,
   ],
