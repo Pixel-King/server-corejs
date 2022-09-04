@@ -48,10 +48,7 @@ export class UsersService {
         findUser.rating = `${userRating}`;
         findUser.passedTests = userTests;
         const updateUser = await this.usersModel
-          .findByIdAndUpdate(
-            { _id: findUser._id },
-            this.getUserToResponse(findUser),
-          )
+          .findByIdAndUpdate({ _id: findUser._id }, findUser)
           .setOptions({ overwrite: true, new: true });
         return updateUser;
       }
@@ -66,16 +63,12 @@ export class UsersService {
       const userArt = findUser.readedArticle;
       const isReaded = userArt.find((art) => art.articleId === body.artId);
       if (!isReaded) {
-        console.log('123');
         userRating += +body.rating;
         userArt.push({ date: body.date, articleId: body.artId });
         findUser.rating = `${userRating}`;
         findUser.readedArticle = userArt;
         const updateUser = await this.usersModel
-          .findByIdAndUpdate(
-            { _id: findUser._id },
-            this.getUserToResponse(findUser),
-          )
+          .findByIdAndUpdate({ _id: findUser._id }, findUser)
           .setOptions({ overwrite: true, new: true });
         return updateUser;
       }
@@ -87,6 +80,7 @@ export class UsersService {
 
   public async findUserBy(where: Partial<UserModel>) {
     const user = await this.usersModel.findOne(where);
+    console.log('fu', user);
     return user ?? null;
   }
 
