@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Questions, QuestionsDocument } from 'src/schemas/questions.schema';
 import { Tests, TestsDocument } from 'src/schemas/tests.schema';
+import { v4 } from 'uuid';
 import { changeQuestionDto, questionDto } from './dto/createQuestions.dto';
 import { createTestDto } from './dto/createTest.dto';
 import { TestsModel } from './tests.models';
@@ -17,7 +18,6 @@ export class TestsService {
 
   public async findSeveralQuestById(id: string) {
     const quest = await this.questionsModel.find();
-    console.log(quest);
     const sortQ = quest.filter((el) => el.testId === id);
     return sortQ;
   }
@@ -36,6 +36,7 @@ export class TestsService {
     const chnageQuest = {
       testId: quest.testId,
       questId: quest.questId,
+      complexity: questionBody.complexity,
       text: questionBody.text,
       answers: questionBody.answers,
     };
@@ -61,6 +62,7 @@ export class TestsService {
       //   const quest = await this.findOneQuestsById(id);
       const questObj = {
         testId: id,
+        questId: v4(),
         text: questionBody.text,
         answers: questionBody.answers,
       };
@@ -82,7 +84,11 @@ export class TestsService {
   }
 
   public async createTest(testBody: createTestDto) {
-    const newTest = new this.testModel(testBody);
+    const test = {
+      ...testBody,
+      id: v4(),
+    };
+    const newTest = new this.testModel(test);
     if (!newTest) {
       const createdTest = await newTest.save();
       return createdTest;

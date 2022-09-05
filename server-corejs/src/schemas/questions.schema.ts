@@ -12,6 +12,9 @@ export class Questions {
   questId: string;
 
   @Prop()
+  complexity: string;
+
+  @Prop()
   text: string;
 
   @Prop()

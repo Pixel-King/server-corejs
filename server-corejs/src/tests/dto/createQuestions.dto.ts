@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class answer {
   @IsNotEmpty()
@@ -14,6 +14,10 @@ export class questionDto {
   @IsNotEmpty()
   @IsString()
   public testId: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  public complexity: number;
 
   @IsNotEmpty()
   @IsString()
@@ -36,6 +40,10 @@ export class changeQuestionDto {
   @IsNotEmpty()
   @IsString()
   public text: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  public complexity: number;
 
   @IsNotEmpty()
   //   @Length(3, 5)

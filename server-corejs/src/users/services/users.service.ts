@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Document, Model, Types } from 'mongoose';
 import { UsersDocument, Users } from 'src/schemas/users.schema';
 import { CryptoService } from 'src/shared/crypto/crypto.service';
+import { v4 } from 'uuid';
 import { ChangeUserInfDto } from '../dto/changeUserInf.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { updatePasedTest, updateReadedArticle } from '../dto/updatePasTest.dto';
@@ -132,6 +133,7 @@ export class UsersService {
     const user = await this.findUserBy({ email: userBody.email });
     const newUserData = {
       ...userBody,
+      id: v4(),
       password: this.cryptoService.getHash(userBody.password),
     };
     const newUser = new this.usersModel(newUserData);
