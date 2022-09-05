@@ -35,10 +35,9 @@ export class AuthService {
     const user = await this.UsersService.findUserBy({
       email: userBody.email,
     });
-    console.log(user);
+
     const passwordHash = this.CryptoService.getHash(userBody.password);
     if (user && passwordHash === user.password) {
-      console.log('123');
       return user;
     }
     return null;
@@ -60,7 +59,7 @@ export class AuthService {
       email: userBody.email,
       role: userBody.role,
       userName: userBody.userName,
-      userRating: userBody.rating,
+      rating: userBody.rating,
       token: token,
     };
   }

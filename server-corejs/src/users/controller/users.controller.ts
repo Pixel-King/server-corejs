@@ -14,6 +14,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../services/users.service';
 import { SetMetadata } from '@nestjs/common';
 import { updatePasedTest, updateReadedArticle } from '../dto/updatePasTest.dto';
+import { ChangeUserInfDto } from '../dto/changeUserInf.dto';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -38,6 +39,30 @@ export class UsersController {
     }
 
     return this.usersService.getUserToResponse(user);
+  }
+
+  @Public()
+  @Post('resetprogress/:id')
+  public async resetProgress(@Param('id', new ParseUUIDPipe()) id: string) {
+    const user = this.usersService.resetProgress(id);
+    if (user) {
+      return user;
+    }
+    return null;
+  }
+
+  @Post('changeinf/:id')
+  public async changeInfAboutUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() userInfo: ChangeUserInfDto,
+  ) {
+    const user = await this.usersService.changeUserInf(id, userInfo);
+
+    if (!user) {
+      return null;
+    }
+
+    return { success: true, email: user.email, userName: user.userName };
   }
 
   @Post('updatepastest/:id')

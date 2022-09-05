@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Document, Model, Types } from 'mongoose';
 import { UsersDocument, Users } from 'src/schemas/users.schema';
 import { CryptoService } from 'src/shared/crypto/crypto.service';
+import { ChangeUserInfDto } from '../dto/changeUserInf.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { updatePasedTest, updateReadedArticle } from '../dto/updatePasTest.dto';
 import { UserModel, UserModelToResponse } from '../models/user.models';
@@ -34,6 +35,45 @@ export class UsersService {
         },
       );
     return allUsers;
+  }
+
+  public async resetProgress(id: string) {
+    const findUser = await this.findUserBy({ id });
+    if (findUser) {
+      findUser.passedTests = [];
+      findUser.readedArticle = [];
+      const updateUser = await this.usersModel
+        .findByIdAndUpdate(
+          {
+            _id: findUser._id,
+          },
+          findUser,
+        )
+        .setOptions({ overwrite: true, new: true });
+      return updateUser;
+    }
+    return null;
+  }
+  public async changeUserInf(id: string, body: ChangeUserInfDto) {
+    const findUser = await this.findUserBy({ id });
+    if (findUser) {
+      const userFindEmail = await this.findUserBy({ email: body.email });
+      if (!userFindEmail || findUser.email === body.email) {
+        findUser.email = body.email;
+        findUser.userName = body.userName;
+        const updateUser = await this.usersModel
+          .findByIdAndUpdate(
+            {
+              _id: findUser._id,
+            },
+            findUser,
+          )
+          .setOptions({ overwrite: true, new: true });
+        return updateUser;
+      }
+      return null;
+    }
+    return null;
   }
 
   public async updatePasedTests(id: string, body: updatePasedTest) {
@@ -80,7 +120,6 @@ export class UsersService {
 
   public async findUserBy(where: Partial<UserModel>) {
     const user = await this.usersModel.findOne(where);
-    console.log('fu', user);
     return user ?? null;
   }
 
